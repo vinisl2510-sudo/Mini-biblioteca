@@ -23,4 +23,6 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
     List<String> listarCategorias();
 
     List<Livro> findAll(Sort sort);
+
+    List<Livro> findByEstoqueLessThan(int limite);
 }

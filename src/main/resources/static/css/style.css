@@ -330,3 +330,33 @@ body.tema-escuro {
     --brand-dark: #6f57ea;
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
+.grid-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+}
+
+.card-metrica {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.metrica-label {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.metrica-valor {
+    font-size: 1.4rem;
+    width: fit-content;
+}

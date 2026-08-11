@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <a th:href="@{/admin/livros}">← Voltar para admin</a>
+    <h1>Dashboard</h1>
+
+    <div class="grid-dashboard">
+        <div class="card-metrica">
+            <span class="metrica-label">Total de livros</span>
+            <span class="metrica-valor dado" th:text="${dados.totalLivros}"></span>
+        </div>
+
+        <div class="card-metrica">
+            <span class="metrica-label">Total de usuários</span>
+            <span class="metrica-valor dado" th:text="${dados.totalUsuarios}"></span>
+        </div>
+
+        <div class="card-metrica">
+            <span class="metrica-label">Total de compras</span>
+            <span class="metrica-valor dado" th:text="${dados.totalCompras}"></span>
+        </div>
+
+        <div class="card-metrica">
+            <span class="metrica-label">Faturamento total</span>
+            <span class="metrica-valor dado" th:text="${'R$ ' + dados.faturamentoTotal}"></span>
+        </div>
+    </div>
+
+    <h2>Livro mais vendido</h2>
+    <p th:if="${dados.livroMaisVendido != null}" th:text="${dados.livroMaisVendido.titulo}"></p>
+    <p th:if="${dados.livroMaisVendido == null}">Nenhuma venda registrada ainda.</p>
+
+    <h2>Livro mais favoritado</h2>
+    <p th:if="${dados.livroMaisFavoritado != null}" th:text="${dados.livroMaisFavoritado.titulo}"></p>
+    <p th:if="${dados.livroMaisFavoritado == null}">Nenhum favorito registrado ainda.</p>
+
+    <h2>⚠️ Estoque baixo (menos de 3 unidades)</h2>
+    <div class="grid-livros">
+        <div th:each="livro : ${dados.livrosComEstoqueBaixo}" class="card-livro">
+            <h3 th:text="${livro.titulo}"></h3>
+            <p class="dado" th:text="'Estoque: ' + ${livro.estoque}"></p>
+        </div>
+    </div>
+    <p th:if="${dados.livrosComEstoqueBaixo.isEmpty()}">Nenhum livro com estoque baixo. 🎉</p>
+</div>
+
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>
