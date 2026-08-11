@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Compras - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <a th:href="@{/livros}">← Voltar para livros</a>
+    <h1>Minhas Compras</h1>
+
+    <div class="grid-livros">
+        <div th:each="compra : ${compras}" class="card-livro">
+            <a th:href="@{/livros/{id}(id=${compra.livro.id})}">
+                <h3 th:text="${compra.livro.titulo}"></h3>
+            </a>
+            <p class="dado" th:text="${'R$ ' + compra.precoPago}"></p>
+        </div>
+    </div>
+
+    <p th:if="${compras.isEmpty()}">Você ainda não comprou nenhum livro.</p>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

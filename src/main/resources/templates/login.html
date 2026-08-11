@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Entrar - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <h2>Entrar</h2>
+
+    <p th:if="${param.error}" class="mensagem-erro">E-mail ou senha inválidos.</p>
+    <p th:if="${param.sucesso}">Conta criada com sucesso! Faça login.</p>
+
+    <form th:action="@{/login}" method="post">
+        <label for="username">E-mail</label>
+        <input type="email" id="username" name="username" required>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    <p>Não tem conta? <a th:href="@{/registro}">Criar conta</a></p>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

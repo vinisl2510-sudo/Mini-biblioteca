@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Livros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <a th:href="@{/livros}">← Voltar para livros</a>
+    <h1>Painel Admin - Livros</h1>
+
+    <a th:href="@{/admin/livros/novo}">+ Novo livro</a>
+
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+        </tr>
+        <tr th:each="livro : ${livros}">
+            <td th:text="${livro.titulo}"></td>
+            <td th:text="${livro.autor}"></td>
+            <td><span class="dado" th:text="${'R$ ' + livro.preco}"></span></td>
+            <td><span class="dado" th:text="${livro.estoque}"></span></td>
+            <td>
+                <a th:href="@{/admin/livros/{id}/editar(id=${livro.id})}">Editar</a>
+
+                <form th:action="@{/admin/livros/{id}/excluir(id=${livro.id})}" method="post" style="display: inline;">
+                    <button type="submit" onclick="return confirm('Tem certeza que quer excluir este livro?')">Excluir</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

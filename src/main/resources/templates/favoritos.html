@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Favoritos - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <a th:href="@{/livros}">← Voltar para livros</a>
+    <h1>Meus Favoritos</h1>
+
+    <div class="grid-livros">
+        <div th:each="favorito : ${favoritos}" class="card-livro">
+            <a th:href="@{/livros/{id}(id=${favorito.livro.id})}">
+                <h3 th:text="${favorito.livro.titulo}"></h3>
+            </a>
+            <p th:text="${favorito.livro.autor}"></p>
+        </div>
+    </div>
+
+    <p th:if="${favoritos.isEmpty()}">Você ainda não favoritou nenhum livro.</p>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

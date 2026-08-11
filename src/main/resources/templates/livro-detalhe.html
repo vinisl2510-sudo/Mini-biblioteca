@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${livro.titulo}">Livro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+  <a th:href="@{/livros}">← Voltar</a>
+
+  <img th:if="${livro.imagemUrl}" th:src="${livro.imagemUrl}" alt="Capa do livro" class="capa-detalhe">
+  <div th:unless="${livro.imagemUrl}" class="capa-placeholder capa-placeholder-grande">📖</div>
+
+  <span class="categoria-tag" th:if="${livro.categoria}" th:text="${livro.categoria}"></span>
+  <h1 th:text="${livro.titulo}"></h1>
+  <p th:text="'por ' + ${livro.autor}"></p>
+  <p class="dado" th:text="${'R$ ' + livro.preco}"></p>
+  <p th:text="${livro.descricao}"></p>
+  <p class="dado" th:text="'Estoque: ' + ${livro.estoque}"></p>
+
+  <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
+
+  <div sec:authorize="isAuthenticated()">
+    <form th:action="@{/favoritos/{id}(id=${livro.id})}" method="post" style="display: inline;">
+      <button type="submit" th:text="${favoritado} ? 'Remover dos favoritos' : 'Favoritar'"></button>
+    </form>
+
+    <form th:if="${!comprado}" th:action="@{/compras/{id}(id=${livro.id})}" method="post" style="display: inline;">
+      <button type="submit">Comprar</button>
+    </form>
+    <span th:if="${comprado}">✔ Você já comprou este livro</span>
+  </div>
+
+  <div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}">Entre para favoritar ou comprar</a>
+  </div>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

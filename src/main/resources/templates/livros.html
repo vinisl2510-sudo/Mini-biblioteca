@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Livros - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page">
+    <h1>Livros</h1>
+
+    <form th:action="@{/livros}" method="get">
+        <input type="text" name="q" placeholder="Buscar por título, autor ou categoria..." th:value="${termoBusca}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div class="abas-categoria">
+        <a th:href="@{/livros}"
+           th:classappend="${categoriaAtiva == ''} ? 'aba-ativa'"
+           class="aba">Todas</a>
+
+        <a th:each="cat : ${categorias}"
+           th:href="@{/livros(categoria=${cat})}"
+           th:classappend="${categoriaAtiva == cat} ? 'aba-ativa'"
+           th:text="${cat}"
+           class="aba"></a>
+    </div>
+    <div class="ordenacao">
+        <span>Ordenar por:</span>
+        <a th:href="@{/livros(ordenar='titulo-az')}"
+           th:classappend="${ordenarAtivo == 'titulo-az'} ? 'aba-ativa'"
+           class="aba">Nome A-Z</a>
+        <a th:href="@{/livros(ordenar='preco-asc')}"
+           th:classappend="${ordenarAtivo == 'preco-asc'} ? 'aba-ativa'"
+           class="aba">Menor preço</a>
+        <a th:href="@{/livros(ordenar='preco-desc')}"
+           th:classappend="${ordenarAtivo == 'preco-desc'} ? 'aba-ativa'"
+           class="aba">Maior preço</a>
+    </div>
+
+    <div class="grid-livros">
+        <div th:each="livro : ${livros}" class="card-livro">
+            <a th:href="@{/livros/{id}(id=${livro.id})}">
+                <h3 th:text="${livro.titulo}"></h3>
+            </a>
+            <p th:text="${livro.autor}"></p>
+            <p class="dado" th:text="${'R$ ' + livro.preco}"></p>
+        </div>
+    </div>
+
+    <p th:if="${livros.isEmpty()}">Nenhum livro encontrado.</p>
+</div>
+<div th:each="livro : ${livros}" class="card-livro">
+    <a th:href="@{/livros/{id}(id=${livro.id})}">
+        <img th:if="${livro.imagemUrl}" th:src="${livro.imagemUrl}" alt="Capa do livro" class="capa-livro">
+        <div th:unless="${livro.imagemUrl}" class="capa-placeholder">📖</div>
+        <h3 th:text="${livro.titulo}"></h3>
+    </a>
+    <p th:text="${livro.autor}"></p>
+    <p class="dado" th:text="${'R$ ' + livro.preco}"></p>
+</div>
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>
