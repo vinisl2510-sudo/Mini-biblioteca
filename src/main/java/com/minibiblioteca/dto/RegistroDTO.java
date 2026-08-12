@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegistroDTO {
+
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
 
@@ -16,12 +17,23 @@ public class RegistroDTO {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
-    public String getNome() {
-        return nome;
+    @NotBlank(message = "A confirmação de senha é obrigatória")
+    private String confirmarSenha;
+
+    public String getConfirmarSenha() {
+        return confirmarSenha;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setConfirmarSenha(String confirmarSenha) {
+        this.confirmarSenha = confirmarSenha;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getEmail() {
@@ -32,11 +44,11 @@ public class RegistroDTO {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getNome() {
+        return nome;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

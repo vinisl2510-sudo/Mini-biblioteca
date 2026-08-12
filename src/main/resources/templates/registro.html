@@ -10,7 +10,7 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="page">
+<div class="page pagina-centralizada">
     <h2>Criar conta</h2>
 
     <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
@@ -27,6 +27,10 @@
         <label for="senha">Senha</label>
         <input type="password" id="senha" th:field="*{senha}">
         <div th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
+
+        <label for="confirmarSenha">Confirmar senha</label>
+        <input type="password" id="confirmarSenha" th:field="*{confirmarSenha}">
+        <div th:if="${#fields.hasErrors('confirmarSenha')}" th:errors="*{confirmarSenha}"></div>
 
         <button type="submit">Criar conta</button>
     </form>

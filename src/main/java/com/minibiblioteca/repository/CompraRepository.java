@@ -18,4 +18,6 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
 
     @Query("SELECT c.livro FROM Compra c GROUP BY c.livro ORDER BY COUNT(c) DESC")
     List<Livro> livrosMaisVendidos();
+
+    void deleteByLivro(Livro livro);
 }

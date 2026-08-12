@@ -16,4 +16,6 @@ public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
 
     @Query("SELECT f.livro FROM Favorito f GROUP BY f.livro ORDER BY COUNT(f) DESC")
     List<Livro> livrosMaisFavoritados();
+
+    void deleteByLivro(Livro livro);
 }

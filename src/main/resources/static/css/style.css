@@ -47,6 +47,21 @@ a:hover { text-decoration: underline; }
     padding: 2rem 1.5rem 4rem;
 }
 
+/* Usada em telas com um único formulário centralizado
+   (login, registro, perfil, admin/livro-form) */
+.pagina-centralizada {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 70vh;
+    justify-content: center;
+}
+
+.pagina-centralizada h1,
+.pagina-centralizada h2 {
+    text-align: center;
+}
+
 /* ===== Navbar ===== */
 
 nav {
@@ -261,6 +276,7 @@ p[style*="color: red"], .mensagem-erro {
     font-weight: 500;
     max-width: 420px;
 }
+
 .abas-categoria {
     display: flex;
     gap: 0.5rem;
@@ -285,6 +301,7 @@ p[style*="color: red"], .mensagem-erro {
     border-color: var(--brand);
     color: #fff;
 }
+
 .capa-livro {
     width: 100%;
     height: 180px;
@@ -320,6 +337,7 @@ p[style*="color: red"], .mensagem-erro {
     height: 320px;
     font-size: 4rem;
 }
+
 body.tema-escuro {
     --ink: #eeecfb;
     --ink-soft: #b3b0d1;
@@ -330,6 +348,7 @@ body.tema-escuro {
     --brand-dark: #6f57ea;
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
+
 .grid-dashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

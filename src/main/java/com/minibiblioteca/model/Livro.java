@@ -1,10 +1,6 @@
 package com.minibiblioteca.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "livros")
@@ -15,6 +11,7 @@ public class Livro {
     private Long id;
     private String titulo;
     private String autor;
+    @Column(columnDefinition = "TEXT")
     private String descricao;
     private double preco;
     private String categoria;

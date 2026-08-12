@@ -39,6 +39,11 @@ public class AuthController {
             return "registro";
         }
 
+        if (!registroDTO.getSenha().equals(registroDTO.getConfirmarSenha())) {
+            model.addAttribute("erro", "As senhas não coincidem.");
+            return "registro";
+        }
+
         try {
             usuarioService.registrar(registroDTO.getNome(), registroDTO.getEmail(), registroDTO.getSenha());
         } catch (Exception e) {
@@ -48,5 +53,6 @@ public class AuthController {
 
         return "redirect:/login?sucesso";
     }
+
 }
 

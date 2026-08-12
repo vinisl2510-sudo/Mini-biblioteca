@@ -1,9 +1,12 @@
 package com.minibiblioteca.service;
 
 import com.minibiblioteca.model.Livro;
+import com.minibiblioteca.repository.CompraRepository;
+import com.minibiblioteca.repository.FavoritoRepository;
 import com.minibiblioteca.repository.LivroRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,9 +14,14 @@ import java.util.List;
 public class LivroService {
 
     private final LivroRepository livroRepository;
+    private final FavoritoRepository favoritoRepository;
+    private final CompraRepository compraRepository;
 
-    public LivroService(LivroRepository livroRepository) {
+    public LivroService(LivroRepository livroRepository, FavoritoRepository favoritoRepository,
+                        CompraRepository compraRepository) {
         this.livroRepository = livroRepository;
+        this.favoritoRepository = favoritoRepository;
+        this.compraRepository = compraRepository;
     }
 
     public List<Livro> listarTodos() {
@@ -53,7 +61,11 @@ public class LivroService {
         return livroRepository.save(livro);
     }
 
+    @Transactional
     public void deletar(Long id) {
+        Livro livro = buscarPorId(id);
+        favoritoRepository.deleteByLivro(livro);
+        compraRepository.deleteByLivro(livro);
         livroRepository.deleteById(id);
     }
 
