@@ -44,6 +44,16 @@
     <p th:if="${dados.livroMaisFavoritado != null}" th:text="${dados.livroMaisFavoritado.titulo}"></p>
     <p th:if="${dados.livroMaisFavoritado == null}">Nenhum favorito registrado ainda.</p>
 
+    <h2>Livro melhor avaliado</h2>
+    <p th:if="${dados.livroMelhorAvaliado != null}"
+       th:text="${dados.livroMelhorAvaliado.titulo} + ' — ⭐ ' + ${#numbers.formatDecimal(dados.notaMelhorAvaliado, 1, 1)}"></p>
+    <p th:if="${dados.livroMelhorAvaliado == null}">Nenhuma avaliação registrada ainda.</p>
+
+    <h2>Livro pior avaliado</h2>
+    <p th:if="${dados.livroPiorAvaliado != null}"
+       th:text="${dados.livroPiorAvaliado.titulo} + ' — ⭐ ' + ${#numbers.formatDecimal(dados.notaPiorAvaliado, 1, 1)}"></p>
+    <p th:if="${dados.livroPiorAvaliado == null}">Nenhuma avaliação registrada ainda.</p>
+
     <h2>⚠️ Estoque baixo (menos de 3 unidades)</h2>
     <div class="grid-livros">
         <div th:each="livro : ${dados.livrosComEstoqueBaixo}" class="card-livro">

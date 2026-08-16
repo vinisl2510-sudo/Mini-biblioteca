@@ -13,6 +13,10 @@ public class DashboardDTO {
     private Livro livroMaisVendido;
     private Livro livroMaisFavoritado;
     private List<Livro> livrosComEstoqueBaixo;
+    private Livro livroMelhorAvaliado;
+    private Double notaMelhorAvaliado;
+    private Livro livroPiorAvaliado;
+    private Double notaPiorAvaliado;
 
 
     public long getTotalLivros() {
@@ -69,5 +73,37 @@ public class DashboardDTO {
 
     public void setLivrosComEstoqueBaixo(List<Livro> livrosComEstoqueBaixo) {
         this.livrosComEstoqueBaixo = livrosComEstoqueBaixo;
+    }
+
+    public Livro getLivroMelhorAvaliado() {
+        return livroMelhorAvaliado;
+    }
+
+    public void setLivroMelhorAvaliado(Livro livroMelhorAvaliado) {
+        this.livroMelhorAvaliado = livroMelhorAvaliado;
+    }
+
+    public Double getNotaMelhorAvaliado() {
+        return notaMelhorAvaliado;
+    }
+
+    public void setNotaMelhorAvaliado(Double notaMelhorAvaliado) {
+        this.notaMelhorAvaliado = notaMelhorAvaliado;
+    }
+
+    public Livro getLivroPiorAvaliado() {
+        return livroPiorAvaliado;
+    }
+
+    public void setLivroPiorAvaliado(Livro livroPiorAvaliado) {
+        this.livroPiorAvaliado = livroPiorAvaliado;
+    }
+
+    public Double getNotaPiorAvaliado() {
+        return notaPiorAvaliado;
+    }
+
+    public void setNotaPiorAvaliado(Double notaPiorAvaliado) {
+        this.notaPiorAvaliado = notaPiorAvaliado;
     }
 }

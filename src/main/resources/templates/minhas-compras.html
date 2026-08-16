@@ -16,10 +16,10 @@
 
     <div class="grid-livros">
         <div th:each="compra : ${compras}" class="card-livro">
-            <a th:href="@{/livros/{id}(id=${compra.livro.id})}">
-                <h3 th:text="${compra.livro.titulo}"></h3>
-            </a>
+            <h3 th:text="${compra.livro.titulo}"></h3>
+            <p>Quantidade: <span class="dado" th:text="${compra.quantidade}"></span></p>
             <p class="dado" th:text="${'R$ ' + compra.precoPago}"></p>
+            <a th:href="@{/compras/{id}(id=${compra.id})}">Ver comprovante</a>
         </div>
     </div>
 

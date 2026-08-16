@@ -30,14 +30,47 @@
       <button type="submit" th:text="${favoritado} ? 'Remover dos favoritos' : 'Favoritar'"></button>
     </form>
 
-    <form th:if="${!comprado}" th:action="@{/compras/{id}(id=${livro.id})}" method="post" style="display: inline;">
+    <form th:if="${livro.estoque > 0}" th:action="@{/compras/{id}(id=${livro.id})}" method="post" style="display: inline;">
+      <label for="quantidade">Qtd.</label>
+      <input type="number" id="quantidade" name="quantidade" value="1" min="1" th:max="${livro.estoque}" style="width: 70px; display: inline-block;">
       <button type="submit">Comprar</button>
     </form>
-    <span th:if="${comprado}">✔ Você já comprou este livro</span>
+    <span th:if="${livro.estoque == 0}">Esgotado</span>
+    <span th:if="${comprado}"> · Você já comprou este livro antes</span>
   </div>
 
   <div sec:authorize="!isAuthenticated()">
     <a th:href="@{/login}">Entre para favoritar ou comprar</a>
+  </div>
+
+  <h2>Avaliações</h2>
+
+  <p th:if="${mediaNota != null}" th:text="'⭐ Média: ' + ${#numbers.formatDecimal(mediaNota, 1, 1)} + ' / 5'"></p>
+  <p th:if="${mediaNota == null}">Este livro ainda não tem avaliações.</p>
+
+  <p th:if="${erroAvaliacao}" th:text="${erroAvaliacao}" class="mensagem-erro"></p>
+
+  <div sec:authorize="isAuthenticated()">
+    <form th:action="@{/livros/{id}/avaliar(id=${livro.id})}" method="post">
+      <label for="nota">Sua nota</label>
+      <select id="nota" name="nota">
+        <option value="5">5 - Excelente</option>
+        <option value="4">4 - Muito bom</option>
+        <option value="3">3 - Bom</option>
+        <option value="2">2 - Ruim</option>
+        <option value="1">1 - Muito ruim</option>
+      </select>
+
+      <label for="comentario">Comentário</label>
+      <textarea id="comentario" name="comentario"></textarea>
+
+      <button type="submit">Enviar avaliação</button>
+    </form>
+  </div>
+
+  <div th:each="avaliacao : ${avaliacoes}" class="card-livro">
+    <p><strong th:text="${avaliacao.usuario.nome}"></strong> — <span th:text="'⭐ ' + ${avaliacao.nota}"></span></p>
+    <p th:text="${avaliacao.comentario}"></p>
   </div>
 </div>
 <script th:src="@{/js/tema.js}"></script>

@@ -7,37 +7,38 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "compras")
 public class Compra {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
     @ManyToOne
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
+
+    private int quantidade;
+
     private double precoPago;
-    private LocalDateTime datacompra;
+
+    private LocalDateTime dataCompra;
 
     public Compra() {
     }
 
-    public Compra(Usuario usuario,
-                  Livro livro,
-                  double precoPago,
-                  LocalDateTime datacompra) {
+    public Compra(Usuario usuario, Livro livro, int quantidade, double precoPago, LocalDateTime dataCompra) {
         this.usuario = usuario;
         this.livro = livro;
+        this.quantidade = quantidade;
         this.precoPago = precoPago;
-        this.datacompra = datacompra;
+        this.dataCompra = dataCompra;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Usuario getUsuario() {
@@ -56,6 +57,14 @@ public class Compra {
         this.livro = livro;
     }
 
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
     public double getPrecoPago() {
         return precoPago;
     }
@@ -64,11 +73,11 @@ public class Compra {
         this.precoPago = precoPago;
     }
 
-    public LocalDateTime getDatacompra() {
-        return datacompra;
+    public LocalDateTime getDataCompra() {
+        return dataCompra;
     }
 
-    public void setDatacompra(LocalDateTime datacompra) {
-        this.datacompra = datacompra;
+    public void setDataCompra(LocalDateTime dataCompra) {
+        this.dataCompra = dataCompra;
     }
 }

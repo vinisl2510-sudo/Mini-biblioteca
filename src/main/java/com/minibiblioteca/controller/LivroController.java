@@ -2,6 +2,7 @@ package com.minibiblioteca.controller;
 
 import com.minibiblioteca.model.Livro;
 import com.minibiblioteca.model.Usuario;
+import com.minibiblioteca.service.AvaliacaoService;
 import com.minibiblioteca.service.CompraService;
 import com.minibiblioteca.service.FavoritoService;
 import com.minibiblioteca.service.LivroService;
@@ -22,13 +23,16 @@ public class LivroController {
     private final UsuarioService usuarioService;
     private final FavoritoService favoritoService;
     private final CompraService compraService;
+    private final AvaliacaoService avaliacaoService;
 
     public LivroController(LivroService livroService, UsuarioService usuarioService,
-                           FavoritoService favoritoService, CompraService compraService) {
+                           FavoritoService favoritoService, CompraService compraService,
+                           AvaliacaoService avaliacaoService) {
         this.livroService = livroService;
         this.usuarioService = usuarioService;
         this.favoritoService = favoritoService;
         this.compraService = compraService;
+        this.avaliacaoService = avaliacaoService;
     }
 
     @GetMapping("/livros")
@@ -59,6 +63,8 @@ public class LivroController {
     public String detalhe(@PathVariable Long id, Model model, Authentication authentication) {
         Livro livro = livroService.buscarPorId(id);
         model.addAttribute("livro", livro);
+        model.addAttribute("avaliacoes", avaliacaoService.listarPorLivro(livro));
+        model.addAttribute("mediaNota", avaliacaoService.mediaNota(livro));
 
         if (authentication != null) {
             Usuario usuario = usuarioService.buscarPorEmail(authentication.getName());

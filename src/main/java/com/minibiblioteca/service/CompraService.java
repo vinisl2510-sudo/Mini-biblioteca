@@ -18,14 +18,19 @@ public class CompraService {
         this.compraRepository = compraRepository;
     }
 
-    public Compra comprar(Usuario usuario, Livro livro) {
-        if (livro.getEstoque() <= 0) {
-            throw new IllegalStateException("Livro fora de estoque.");
+    public Compra comprar(Usuario usuario, Livro livro, int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
         }
 
-        livro.setEstoque(livro.getEstoque() - 1);
+        if (livro.getEstoque() < quantidade) {
+            throw new IllegalStateException("Estoque insuficiente. Disponível: " + livro.getEstoque());
+        }
 
-        Compra compra = new Compra(usuario, livro, livro.getPreco(), LocalDateTime.now());
+        livro.setEstoque(livro.getEstoque() - quantidade);
+
+        double valorTotal = livro.getPreco() * quantidade;
+        Compra compra = new Compra(usuario, livro, quantidade, valorTotal, LocalDateTime.now());
         return compraRepository.save(compra);
     }
 
@@ -35,5 +40,10 @@ public class CompraService {
 
     public boolean jaComprou(Usuario usuario, Livro livro) {
         return compraRepository.existsByUsuarioAndLivro(usuario, livro);
+    }
+
+    public Compra buscarComprovante(Long id, Usuario usuario) {
+        return compraRepository.findByIdAndUsuario(id, usuario)
+                .orElseThrow(() -> new IllegalArgumentException("Comprovante não encontrado."));
     }
 }

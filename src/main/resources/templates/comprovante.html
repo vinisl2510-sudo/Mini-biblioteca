@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprovante - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page pagina-centralizada">
+    <div class="card-livro" style="max-width: 420px;">
+        <h1>🧾 Comprovante</h1>
+
+        <p><strong>Livro:</strong> <span th:text="${compra.livro.titulo}"></span></p>
+        <p><strong>Autor:</strong> <span th:text="${compra.livro.autor}"></span></p>
+        <p><strong>Quantidade:</strong> <span class="dado" th:text="${compra.quantidade}"></span></p>
+        <p><strong>Valor total:</strong> <span class="dado" th:text="${'R$ ' + compra.precoPago}"></span></p>
+        <p><strong>Data:</strong> <span th:text="${#temporals.format(compra.dataCompra, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+
+    <a th:href="@{/compras}">← Voltar para minhas compras</a>
+</div>
+
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>
