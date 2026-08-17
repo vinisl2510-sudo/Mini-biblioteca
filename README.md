@@ -1,17 +1,30 @@
 📚 Mini Biblioteca
 
-Aplicação web fullstack para uma pequena biblioteca/livraria online, desenvolvida com Java, Spring Boot e MySQL. Permite que usuários naveguem por livros, favoritem, comprem (compra simulada) e pesquisem por título, autor ou categoria, enquanto administradores gerenciam o catálogo e acompanham métricas pelo painel.
+Aplicação web fullstack para uma pequena biblioteca/livraria online, desenvolvida com Java, Spring Boot e MySQL. Permite que usuários naveguem por livros, favoritem, comprem (compra simulada, com quantidade e comprovante), avaliem e pesquisem por título, autor ou categoria, enquanto administradores gerenciam o catálogo e acompanham métricas pelo painel.
 
 ## Funcionalidades
 
+**Conta e autenticação**
 * Cadastro e login de usuários com senha em hash (`BCryptPasswordEncoder`, Spring Security)
-* Catálogo de livros com busca por título/autor/categoria, filtro por abas de categoria e ordenação (nome, menor/maior preço)
-* Favoritar / desfavoritar livros
-* Compra simulada com controle de estoque (desconta automaticamente, bloqueia se esgotado)
+* Confirmação de senha no cadastro (validação no servidor) e no login (validação em JavaScript)
+* Recuperação de senha por token com expiração de 30 minutos — o link é impresso no console da aplicação, simulando o envio por e-mail sem depender de um servidor SMTP
 * Perfil do usuário com troca de senha (exige confirmação da senha atual)
+
+**Catálogo e compra**
+* Busca por título/autor/categoria, filtro por abas de categoria e ordenação (nome, menor/maior preço)
+* Favoritar / desfavoritar livros
+* Compra simulada com quantidade configurável e controle de estoque (desconta automaticamente, bloqueia se insuficiente)
+* Comprovante de compra individual, acessível apenas pelo próprio usuário que comprou
+* Avaliações (nota de 1 a 5 + comentário) — só quem já comprou o livro pode avaliar, uma avaliação por usuário por livro
+
+**Administração**
 * Painel administrativo (`ROLE_ADMIN`) com CRUD completo de livros, incluindo capa via URL
-* Dashboard administrativo com métricas agregadas: total de livros/usuários/compras, faturamento, livro mais vendido, livro mais favoritado e alerta de estoque baixo
+* Exclusão de livros em cascata: remove automaticamente favoritos, compras e avaliações relacionadas antes de excluir o livro
+* Dashboard com métricas agregadas: total de livros/usuários/compras, faturamento, livro mais vendido, mais favoritado, melhor e pior avaliado, e alerta de estoque baixo
+
+**Outros**
 * Modo claro/escuro persistente (`localStorage`)
+* Telas de formulário (login, registro, perfil, admin) centralizadas visualmente
 * Seed automático de livros de exemplo na primeira execução (`DataSeeder`)
 
 ## Tecnologias
@@ -38,36 +51,45 @@ Aplicação web fullstack para uma pequena biblioteca/livraria online, desenvolv
 │   │   ├── Usuario.java
 │   │   ├── Livro.java
 │   │   ├── Favorito.java
-│   │   └── Compra.java
+│   │   ├── Compra.java               # inclui quantidade e valor total
+│   │   ├── Avaliacao.java            # nota + comentário, único por usuário/livro
+│   │   └── TokenRecuperacao.java     # token + expiração p/ recuperação de senha
 │   ├── repository/
 │   │   ├── UsuarioRepository.java
 │   │   ├── LivroRepository.java
 │   │   ├── FavoritoRepository.java
-│   │   └── CompraRepository.java
+│   │   ├── CompraRepository.java
+│   │   ├── AvaliacaoRepository.java
+│   │   └── TokenRecuperacaoRepository.java
 │   ├── service/
 │   │   ├── UsuarioService.java
-│   │   ├── LivroService.java
+│   │   ├── LivroService.java         # inclui cascade delete
 │   │   ├── FavoritoService.java
-│   │   ├── CompraService.java
-│   │   └── DashboardService.java
+│   │   ├── CompraService.java        # controle de estoque por quantidade
+│   │   ├── AvaliacaoService.java
+│   │   ├── DashboardService.java
+│   │   └── RecuperacaoSenhaService.java
 │   ├── controller/
 │   │   ├── AuthController.java
 │   │   ├── LivroController.java
 │   │   ├── FavoritoController.java
-│   │   ├── CompraController.java
+│   │   ├── CompraController.java     # inclui rota do comprovante
+│   │   ├── AvaliacaoController.java
 │   │   ├── UsuarioController.java
 │   │   ├── LivroAdminController.java
-│   │   └── DashboardController.java
+│   │   ├── DashboardController.java
+│   │   └── RecuperacaoSenhaController.java
 │   └── dto/
-│       ├── RegistroDTO.java
+│       ├── RegistroDTO.java          # inclui confirmação de senha
 │       └── DashboardDTO.java
 └── src/main/resources/
     ├── application.yaml
     ├── templates/
     │   ├── fragments/navbar.html
     │   ├── login.html, registro.html, perfil.html
+    │   ├── esqueci-senha.html, redefinir-senha.html
     │   ├── livros.html, livro-detalhe.html
-    │   ├── favoritos.html, minhas-compras.html
+    │   ├── favoritos.html, minhas-compras.html, comprovante.html
     │   └── admin/
     │       ├── livros-admin.html
     │       ├── livro-form.html
@@ -151,6 +173,20 @@ UPDATE usarios SET role = 'ROLE_ADMIN' WHERE email = 'seu-email@exemplo.com';
 
 Depois, faça logout e login novamente (a sessão só atualiza o papel no próximo login).
 
+### 7. Testando a troca/recuperação de senha
+
+**Trocar a senha estando logado:** acesse `/perfil`, informe a senha atual e a nova senha. A troca só é aceita se a senha atual informada bater com o hash salvo no banco.
+
+**Recuperar a senha esquecida:**
+1. Na tela de login, clique em "Esqueci minha senha" (ou acesse `/esqueci-senha`) e informe o e-mail cadastrado.
+2. Como este projeto não está integrado a um servidor de e-mail real, o link de recuperação é impresso diretamente **no console/terminal onde a aplicação está rodando**, dentro de um bloco destacado com `====`. Procure uma linha assim:
+   ```
+   http://localhost:8080/redefinir-senha?token=<token gerado>
+   ```
+3. Copie essa URL e cole no navegador. Isso abre a tela de redefinição, onde você define a nova senha.
+4. O link expira em 30 minutos e só pode ser usado uma vez — depois de redefinir a senha, o token é apagado do banco.
+5. Por segurança, a tela de "Esqueci minha senha" sempre mostra a mesma mensagem de sucesso, informe um e-mail cadastrado ou não — isso evita que alguém descubra quais e-mails têm conta no sistema apenas testando a funcionalidade.
+
 ## Segurança
 
 * Nenhuma credencial fica no código-fonte; tudo vem de variáveis de ambiente (`.env`, fora do Git)
@@ -158,6 +194,9 @@ Depois, faça logout e login novamente (a sessão só atualiza o papel no próxi
 * Proteção contra SQL Injection: todas as consultas usam Spring Data JPA (métodos derivados ou `@Query` com parâmetros nomeados), nunca concatenação de strings
 * CSRF protegido nos formulários (token automático via Thymeleaf)
 * Autorização por papéis: rotas `/admin/**` exigem `ROLE_ADMIN`, demais rotas exigem apenas autenticação
+* Tokens de recuperação de senha gerados com `SecureRandom` (aleatoriedade criptograficamente segura), com expiração e uso único
+* Comprovantes de compra só são acessíveis pelo próprio usuário que realizou a compra (busca sempre filtrada por `id` + usuário autenticado)
+* Exclusão de livros em cascata evita erros de integridade referencial e mantém o banco consistente
 
 ---
 
