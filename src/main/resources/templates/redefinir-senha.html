@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Redefinir senha - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page pagina-centralizada">
+    <h2>Redefinir senha</h2>
+
+    <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
+
+    <form th:action="@{/redefinir-senha}" method="post">
+        <input type="hidden" name="token" th:value="${token}">
+
+        <label for="novaSenha">Nova senha</label>
+        <input type="password" id="novaSenha" name="novaSenha" required minlength="6">
+
+        <button type="submit">Redefinir senha</button>
+    </form>
+</div>
+
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>

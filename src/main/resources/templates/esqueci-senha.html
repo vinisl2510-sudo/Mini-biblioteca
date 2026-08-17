@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Esqueci minha senha - Mini Biblioteca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="page pagina-centralizada">
+    <h2>Esqueci minha senha</h2>
+    <p>Digite seu e-mail. Se ele existir na nossa base, geramos um link de recuperação (que, nesse projeto local, aparece no console da aplicação em vez de ser enviado por e-mail de verdade).</p>
+
+    <p th:if="${sucesso}" th:text="${sucesso}"></p>
+
+    <form th:action="@{/esqueci-senha}" method="post">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Enviar link de recuperação</button>
+    </form>
+
+    <p><a th:href="@{/login}">← Voltar para login</a></p>
+</div>
+
+<script th:src="@{/js/tema.js}"></script>
+</body>
+</html>
